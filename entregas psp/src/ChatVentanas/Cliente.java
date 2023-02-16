@@ -91,7 +91,7 @@ class LaminaMarcoCliente extends JPanel implements Runnable{
 
             //System.out.println(campo1.getText());
             try {
-                Socket misocket = new Socket("192.168.56.1", 9999);
+                Socket misocket = new Socket("192.168.177.127", 9999);
 
                 PaqueteEnvio datos = new PaqueteEnvio();
                 datos.setNick(nick.getText());
