@@ -1,7 +1,5 @@
 package ChatVentanas;
 
-import act_chattcp.Hilo;
-
 import javax.swing.*;
 
 import java.awt.*;
