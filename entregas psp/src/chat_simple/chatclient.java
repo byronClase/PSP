@@ -1,32 +1,33 @@
 package chat_simple;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class chatclient {
 
     public static void main(String args[]) throws Exception {
-        Socket sk = new Socket("localhost", 9090);
-        BufferedReader sin = new BufferedReader(new
-                InputStreamReader(sk.getInputStream()));
-        PrintStream sout = new PrintStream(sk.getOutputStream());
-        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-        String s;
-        while (true) {
-            System.out.print("Client : ");
-            s = stdin.readLine();
+        Scanner sc = new Scanner(System.in);
+        InetAddress ip = InetAddress.getByName("localhost");
+        Socket socket = new Socket(ip, 6666);
 
-            sout.println(s);
-            s = sin.readLine();
-            System.out.print("Server : " + s + "\n");
-            if (s.equalsIgnoreCase("BYE"))
+        DataInputStream in = new DataInputStream(socket.getInputStream());
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        while (true) {
+            System.out.println(in.readUTF());
+            String toSend = sc.next();
+            out.writeUTF(toSend);
+            if(toSend.equalsIgnoreCase("Exit")){
+                System.out.println("Cerrando conexion con "+ socket);
+                System.out.println("Conexion cerrada");
                 break;
+            }
+            String received = in.readUTF();
+            System.out.println(received);
         }
-        sk.close();
-        sin.close();
-        sout.close();
-        stdin.close();
+        sc.close();
+        in.close();
+        out.close();
     }
 }
